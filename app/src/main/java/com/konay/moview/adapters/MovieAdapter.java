@@ -39,6 +39,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                     int position = getAdapterPosition (); //getting the position index i.e. it start from 0
                     Log.d("Position", ""+position + movieItem.getTitle ());
                     Intent intent = new Intent (v.getContext (), DetailActivity.class);
+                    intent.putExtra ("movieTitle", movieItem.getTitle ());
+                    intent.putExtra ("movieImage", movieItem.getImage ());
                     v.getContext ().startActivity (intent);
                 }
             });

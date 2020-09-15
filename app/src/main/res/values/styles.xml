@@ -16,4 +16,10 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="BtnTheme" parent="Theme.MaterialComponents"/>
+
+    <style name="ToolbarTitle" parent="@style/TextAppearance.AppCompat.Title">
+        <item name="android:textSize">20sp</item> <!-- default value 20sp portrait, 14sp landscape -->
+    </style>
+
 </resources>

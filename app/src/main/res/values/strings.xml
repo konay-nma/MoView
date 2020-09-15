@@ -18,4 +18,10 @@
     <string name="more">SEE ALL</string>
     <string name="cover_image">CoverImage</string>
     <string name="watch">WATCH NOW</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec porttitor volutpat odio, id facilisis orci commodo et. Ut commodo bibendum justo in auctor. Integer mi mi, iaculis quis neque sit amet, facilisis blandit massa. Suspendisse potenti. Aliquam tincidunt tempus tortor eu dapibus. Morbi mattis erat urna, in auctor augue bibendum quis. Aliquam facilisis, massa non elementum sagittis, nisl tortor ornare nisl, id tincidunt orci ante id mi. Proin pulvinar ultrices viverra. Vestibulum vel libero at sapien cursus facilisis vel semper mauris. Aliquam condimentum felis ac suscipit dignissim. Integer semper sagittis libero nec tempus.Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus aliquam mattis turpis eu finibus. Donec commodo nisl sit amet libero viverra, ac venenatis ante sodales. Maecenas dapibus luctus consequat. Suspendisse potenti. Donec eu ipsum sit amet justo tristique maximus. Praesent vitae magna eu odio porta dignissim in non sapien. Morbi quis ligula enim. Etiam tincidunt iaculis ante, at pulvinar odio fermentum sagittis. Integer sit amet consectetur justo, at euismod diam. Aenean metus arcu, dignissim vel euismod vitae, aliquam sit amet est. Ut nec volutpat urna, in euismod turpis. Vestibulum convallis convallis sagittis. Praesent lacinia vel risus at fermentum.</string>
+    <string name="watch_btn">Watch</string>
+    <string name="download">Download</string>
+    <string name="title">Title</string>
+    <string name="textview">TextView</string>
+    <string name="recomended_for_you">Recomended For You</string>
 </resources>
