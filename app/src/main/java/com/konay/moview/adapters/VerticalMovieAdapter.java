@@ -49,7 +49,7 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         VerticalMovie current = verticalMovieList.get (position); //getting the current position item from model list
         holder.verticalTitle.setText (current.getCategory ());
-        movieAdapter = new MovieAdapter (current.getMovieList ()); // creating new instance
+        movieAdapter = new MovieAdapter (current.getMovieList (), context); // creating new instance
         holder.recyclerViewMovie.setAdapter (movieAdapter); //set adapter the recycler view
         holder.recyclerViewMovie.setRecycledViewPool (viewPool); // set view pool
         holder.recyclerViewMovie.setLayoutManager (new LinearLayoutManager (context, LinearLayoutManager.HORIZONTAL, false));

@@ -33,8 +33,6 @@ public class DetailActivity extends AppCompatActivity {
         toolbarDetail = findViewById (R.id.toolbar_detail);
         setSupportActionBar (toolbarDetail);
         getSupportActionBar ().setTitle (movieTitle);
-        getSupportActionBar ().setDisplayHomeAsUpEnabled (true);
-        getSupportActionBar ().setDisplayShowHomeEnabled (true);
 
         textViewDetailTitle = findViewById (R.id.text_view_detail_title);
         textViewGenres = findViewById (R.id.text_view_genres);
@@ -47,11 +45,11 @@ public class DetailActivity extends AppCompatActivity {
         recyclerViewDetail.setLayoutManager (layoutManager);
 
         List<Movie> movieList = new ArrayList<> ();
-        movieList.add (new Movie (R.drawable.moana, "Moiana"));
+        movieList.add (new Movie ( R.drawable.moana, "Moiana"));
         movieList.add (new Movie (R.drawable.mov2, "Moiana"));
         movieList.add (new Movie (R.drawable.slide2, "Moiana"));
         movieList.add (new Movie (R.drawable.slide1, "Moiana"));
-        movieAdapter = new MovieAdapter (movieList);
+        movieAdapter = new MovieAdapter (movieList, this);
         recyclerViewDetail.setAdapter (movieAdapter);
 
         textViewDetailTitle.setText (movieTitle);

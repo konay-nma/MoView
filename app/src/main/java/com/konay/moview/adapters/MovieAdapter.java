@@ -1,5 +1,6 @@
 package com.konay.moview.adapters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.konay.moview.R;
 import com.konay.moview.activity.DetailActivity;
 import com.konay.moview.models.Movie;
@@ -48,9 +50,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     }
 
     private List<Movie> movieList;
+    private Context context;
 
-    public MovieAdapter(List<Movie> movieList) {
+    public MovieAdapter(List<Movie> movieList, Context context) {
         this.movieList = movieList;
+        this.context = context;
     }
 
     @NonNull
@@ -63,9 +67,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         final Movie movieItem = movieList.get (position);
-        holder.movieImage.setImageResource (movieItem.getImage ());
+        String imageUrl = movieItem.getImageUrl ();
         holder.movieTitle.setText (movieItem.getTitle ());
         holder.containerView.setTag (movieItem);
+        Glide.with (context)
+                .load (imageUrl)
+                .into (holder.movieImage);
     }
 
     @Override

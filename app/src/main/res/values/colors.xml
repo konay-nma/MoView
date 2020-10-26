@@ -6,4 +6,6 @@
     <color name="refresh_progress_1">#FF4081</color>
     <color name="refresh_progress_2">#FF8081</color>
     <color name="refresh_progress_3">#3F51B5</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

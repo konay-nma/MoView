@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.bumptech.glide.Glide;
 import com.konay.moview.R;
 import com.konay.moview.models.Slide;
 
@@ -33,8 +34,11 @@ public SliderPagerAdapter(Context context, List<Slide> slides){
         ImageView slideImage = slideLayout.findViewById (R.id.slide_image);
         TextView slideTitle = slideLayout.findViewById (R.id.slide_title);
         // set image resource and title
-        slideImage.setImageResource (mList.get(position).getImage ()); // set image resource and title
+        String imageUrl = mList.get (position).getImage ();
         slideTitle.setText (mList.get(position).getTitle ());
+        Glide.with (mContex)
+                .load (imageUrl)
+                .into(slideImage);
         container.addView (slideLayout); // add slide layout view to container
         return slideLayout;
     }

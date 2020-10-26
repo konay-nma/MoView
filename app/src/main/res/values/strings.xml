@@ -24,4 +24,7 @@
     <string name="title">Title</string>
     <string name="textview">TextView</string>
     <string name="recomended_for_you">Recomended For You</string>
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
