@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.konay.moview.R;
 import com.konay.moview.adapters.MovieAdapter;
 import com.konay.moview.models.Movie;
@@ -29,7 +31,8 @@ public class DetailActivity extends AppCompatActivity {
         setContentView (R.layout.detail_activity);
         Intent intent = getIntent ();
         String movieTitle = intent.getStringExtra ("movieTitle");
-        int movieImage = intent.getIntExtra ("movieImage", 0);
+        String movieImage = intent.getStringExtra ("movieImage");
+        Log.d("image", "this is " + movieImage);
         toolbarDetail = findViewById (R.id.toolbar_detail);
         setSupportActionBar (toolbarDetail);
         getSupportActionBar ().setTitle (movieTitle);
@@ -53,8 +56,11 @@ public class DetailActivity extends AppCompatActivity {
         recyclerViewDetail.setAdapter (movieAdapter);
 
         textViewDetailTitle.setText (movieTitle);
-        imageDetail.setImageResource (movieImage);
-        coverImage.setImageResource (movieImage);
-
+        Glide.with(this)
+                .load(movieImage)
+                .into(imageDetail);
+        Glide.with(this)
+                .load(movieImage)
+                .into(coverImage);
     }
 }

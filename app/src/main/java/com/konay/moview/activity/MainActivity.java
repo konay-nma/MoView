@@ -46,9 +46,9 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager sliderPager;
-    private List<Slide> listSlides = new ArrayList<> ();
+    private final List<Slide> listSlides = new ArrayList<> ();
     private Timer timer;
-    private List<VerticalMovie> verticalMovieList = new ArrayList<> ();
+    private final List<VerticalMovie> verticalMovieList = new ArrayList<> ();
     private ProgressBar progressBar;
     private VerticalMovieAdapter verticalMovieAdapter;
     SliderPagerAdapter adapter;

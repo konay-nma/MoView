@@ -42,7 +42,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
                     Log.d("Position", ""+position + movieItem.getTitle ());
                     Intent intent = new Intent (v.getContext (), DetailActivity.class);
                     intent.putExtra ("movieTitle", movieItem.getTitle ());
-                    intent.putExtra ("movieImage", movieItem.getImage ());
+                    intent.putExtra ("movieImage", movieItem.getImageUrl());
                     v.getContext ().startActivity (intent);
                 }
             });
