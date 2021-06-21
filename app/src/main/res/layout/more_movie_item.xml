@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="170dp"
+    android:id="@+id/card_view_more_movie_item"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardCornerRadius="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/more_movie_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:contentDescription="@string/image_dec"
+            android:scaleType="fitXY"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/more_movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/movie_title"
+            android:textColor="@android:color/darker_gray"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/more_movie_image"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:background="@drawable/year_bg"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="2019"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/year_bg"
+            android:text="HD"
+            android:textColor="#FFFEFE"
+            android:textStyle="bold"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:layout_marginLeft="3dp"
+            card_view:layout_constraintStart_toEndOf="@+id/textView3"
+            card_view:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="3dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

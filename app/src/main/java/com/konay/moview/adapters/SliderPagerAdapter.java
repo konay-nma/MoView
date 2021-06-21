@@ -1,5 +1,6 @@
 package com.konay.moview.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,16 +11,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.bumptech.glide.Glide;
 import com.konay.moview.R;
 import com.konay.moview.models.Slide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
-    private List<Slide> mList;
-    private Context mContex;
+    private final List<Slide> mList;
+    private final Context mContex;
 
 public SliderPagerAdapter(Context context, List<Slide> slides){
     this.mContex = context;
@@ -30,14 +31,15 @@ public SliderPagerAdapter(Context context, List<Slide> slides){
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater layoutInflater = (LayoutInflater) mContex.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
-        View slideLayout = layoutInflater.inflate (R.layout.slide_item, null);
+        @SuppressLint("InflateParams") View slideLayout = layoutInflater.inflate (R.layout.slide_item, null);
         ImageView slideImage = slideLayout.findViewById (R.id.slide_image);
         TextView slideTitle = slideLayout.findViewById (R.id.slide_title);
         // set image resource and title
         String imageUrl = mList.get (position).getImage ();
         slideTitle.setText (mList.get(position).getTitle ());
-        Glide.with (mContex)
-                .load (imageUrl)
+        Picasso.get()
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_launcher_background)
                 .into(slideImage);
         container.addView (slideLayout); // add slide layout view to container
         return slideLayout;

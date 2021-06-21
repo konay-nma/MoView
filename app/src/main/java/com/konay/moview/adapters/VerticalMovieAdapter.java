@@ -1,6 +1,7 @@
 package com.konay.moview.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.konay.moview.R;
+import com.konay.moview.models.Movie;
 import com.konay.moview.models.VerticalMovie;
 
 import java.util.List;
@@ -31,10 +33,20 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView verticalTitle ;
         private RecyclerView recyclerViewMovie;
+        private TextView moreMovie;
         public MyViewHolder(@NonNull View itemView) {
             super (itemView);
             verticalTitle = itemView.findViewById (R.id.vertical_item_title);
             recyclerViewMovie = itemView.findViewById (R.id.horizontal_movie_recycler_view);
+            moreMovie = itemView.findViewById(R.id.more_movie);
+
+            moreMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    List<Movie> movieList = (List<Movie>) moreMovie.getTag();
+                    Log.d("more movies list", "" + movieList );
+                }
+            });
         }
     }
 
@@ -54,6 +66,8 @@ public class VerticalMovieAdapter extends RecyclerView.Adapter<VerticalMovieAdap
         holder.recyclerViewMovie.setRecycledViewPool (viewPool); // set view pool
         holder.recyclerViewMovie.setLayoutManager (new LinearLayoutManager (context, LinearLayoutManager.HORIZONTAL, false));
         holder.recyclerViewMovie.setNestedScrollingEnabled (false); // not to over write main scrolling behavior
+
+        holder.moreMovie.setTag(current.getMovieList());
     }
 
     @Override

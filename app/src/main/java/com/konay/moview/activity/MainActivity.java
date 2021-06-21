@@ -1,15 +1,14 @@
 package com.konay.moview.activity;
 
-import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,14 +31,21 @@ import com.konay.moview.adapters.VerticalMovieAdapter;
 import com.konay.moview.models.Movie;
 import com.konay.moview.models.Slide;
 import com.konay.moview.models.VerticalMovie;
+import com.konay.moview.services.ApiFetcher;
+import com.konay.moview.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -52,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private VerticalMovieAdapter verticalMovieAdapter;
     SliderPagerAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -68,14 +73,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewVerticalMovie.setLayoutManager (layoutManager);
         recyclerViewVerticalMovie.setHasFixedSize (true);
         //recyclerViewMovie.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.HORIZONTAL, false));
-
         loadMovieApi();
-        /**
-        listSlides.add(new Slide (R.drawable.slide1, "Slide title 1"));
-        listSlides.add(new Slide (R.drawable.slide2, "Slide title 2"));
-        listSlides.add(new Slide (R.drawable.slide1, "Slide title 1"));
-        listSlides.add(new Slide (R.drawable.slide2, "Slide title 2"));
-        **/
         adapter = new SliderPagerAdapter (this, listSlides);
         //set up adapter
         sliderPager.setAdapter (adapter);
@@ -84,38 +82,8 @@ public class MainActivity extends AppCompatActivity {
 //        timer.scheduleAtFixedRate (new MainActivity.SliderTimer(), 4000, 6000);
         indicator.setupWithViewPager (sliderPager, true);
 
-        // setting up the movie item to adapter and set up adapter
-        /**
-        movieList.add (new Movie (R.drawable.moana, "Moiana"));
-        movieList.add (new Movie (R.drawable.mov2, "Moiana"));
-        movieList.add (new Movie (R.drawable.slide2, "Moiana"));
-        movieList.add (new Movie (R.drawable.slide1, "Moiana")); **/
-       // MovieAdapter movieAdapter = new MovieAdapter (movieList);
-        //set recyclerview with the movie adapter
-       // recyclerViewMovie.setAdapter (movieAdapter);
-
-        // setting up the vertical movie adapter and data list handling
-        /**
-        verticalMovieList.add (new VerticalMovie ("First Category", movieList));
-        verticalMovieList.add (new VerticalMovie ("Second Category", movieList));
-        verticalMovieList.add (new VerticalMovie ("Third Category", movieList));
-        verticalMovieList.add (new VerticalMovie ("Third Category", movieList)); **/
         verticalMovieAdapter = new VerticalMovieAdapter (verticalMovieList, this);
         recyclerViewVerticalMovie.setAdapter (verticalMovieAdapter);
-        recyclerViewVerticalMovie.addOnScrollListener (new RecyclerView.OnScrollListener () {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-
-                Log.d("DY", ""+dx + dy);
-                super.onScrolled (recyclerView, dx, dy);
-            }
-
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                Log.d("state", ""+newState);
-                super.onScrollStateChanged (recyclerView, newState);
-            }
-        });
 
         FloatingActionButton fab = findViewById (R.id.fab);
         fab.setOnClickListener (new View.OnClickListener () {
@@ -132,62 +100,73 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadMovieApi() {
-        String url = "https://us-central1-nodemcu-thesis-db.cloudfunctions.net/app/moviesapi";
-        RequestQueue requestQueue = Volley.newRequestQueue (getApplicationContext ());
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest (Request.Method.GET, url, null, new Response.Listener<JSONArray> () {
+        String url = "https://www.googleapis.com/blogger/v3/blogs/" + Constants.BLOG_ID +
+                    "/posts?" + "maxResults=" + Constants.MAX_RESUlT +
+                    "&key=" + Constants.KEY;
+        new ApiFetcher(this).setOnResponseLister(new ApiFetcher.OnResponseListener() {
             @Override
-            public void onResponse(JSONArray response) {
-                progressBar.setVisibility (View.INVISIBLE);
-                try {
-                    List<Movie> allList = new ArrayList<> ();
-                    JSONArray categoryArr = response.getJSONObject (0).getJSONArray ("categories");
-                    JSONArray movies =response.getJSONObject (1).getJSONArray ("movies");
-
-                    for (int i = 0; i < movies.length (); i++) {
-                        JSONObject movie = movies.getJSONObject (i);
-                        listSlides.add (new Slide ((movie.getString ("title")), movie.getString ("image")));
-                        // random slide list movie
-                        for(int j = 6; j < listSlides.size (); j++) {
-                            Random random = new Random ();
-                            int randomIndex = random.nextInt (listSlides.size ());
-                            listSlides.remove (randomIndex);
-                        }
-                        allList.add(new Movie (movie.getString ("title"), movie.getString ("image"), movie.getString ("category")));
+            public void OnResponse(JSONObject response) throws JSONException {
+                progressBar.setVisibility(View.INVISIBLE);
+                List<Movie> allList = new ArrayList<>();
+                JSONArray jsonArrayItems = response.getJSONArray("items");
+                List<String> categoryArr = new ArrayList<>();
+                for (int i = 0; i < jsonArrayItems.length (); i++) {
+                    JSONObject jsonObjectContent = jsonArrayItems.getJSONObject (i);
+                    String htmlContents = jsonObjectContent.getString("content");
+                    String contents = Html.fromHtml(htmlContents).toString();
+                    //Log.i("contents", contents);
+                    JSONObject jsonObjectMovies = new JSONObject(contents);
+                    //Log.i("movie: ", ""+ jsonObjectMovies);
+                    String category = jsonObjectMovies.getString("category");
+                    categoryArr.add(category);
+                    listSlides.add (new Slide ((jsonObjectMovies.getString ("title")), jsonObjectMovies.getString ("image")));
+                    // random slide list movie
+                    for(int j = 6; j < listSlides.size (); j++) {
+                        Random random = new Random ();
+                        int randomIndex = random.nextInt (listSlides.size ());
+                        listSlides.remove (randomIndex);
                     }
 
-                    adapter.notifyDataSetChanged ();
-
-                    verticalMovieList.add (new VerticalMovie ("Recent Added"+" ("+ allList.size ()+")", allList));
-
-                    for (int j = 0; j < categoryArr.length (); j++) {
-                        List<Movie> movieList = new ArrayList<> ();
-                        for(int i = 0; i < movies.length (); i++) {
-                            JSONObject movie = movies.getJSONObject (i);
-                            String title = movie.getString ("title");
-                            String image = movie.getString ("image");
-                            String category = movie.getString ("category");
-                            if(categoryArr.getString(j).equals (movie.getString ("category"))) {
-                                movieList.add(new Movie (title, image, category));
-                            }
-
-                            Log.d("movies", ""+movie);
-                        }
-                        // matching the category and movie list
-                        verticalMovieList.add (new VerticalMovie (categoryArr.getString (j)+" ("+movieList.size ()+")", movieList));
-                        Log.d ("verList", ""+ verticalMovieList.size ());
-                    }
-                    verticalMovieAdapter.notifyDataSetChanged ();
-                } catch (JSONException e) {
-                    e.printStackTrace ();
+                    allList.add(new Movie (jsonObjectMovies.getString ("title"),
+                            jsonObjectMovies.getString ("image"),
+                            jsonObjectMovies.getString("category"),
+                            jsonObjectMovies.getJSONArray("source")));
                 }
+
+                adapter.notifyDataSetChanged ();
+
+                verticalMovieList.add (new VerticalMovie ("Recent Added"+" ("+ allList.size ()+")", allList));
+                String[] categoryArray = new LinkedHashSet<>(categoryArr).toArray(new String[0]);
+                Log.i("array", "" + categoryArray);
+                for (int j = 0; j < categoryArray.length; j++) {
+                    List<Movie> movieList = new ArrayList<> ();
+                    for(int i = 0; i < jsonArrayItems.length (); i++) {
+                        JSONObject jsonObjectContent = jsonArrayItems.getJSONObject (i);
+                        String htmlContents = jsonObjectContent.getString("content");
+                        String contents = Html.fromHtml(htmlContents).toString();
+                        // Log.i("contents", contents);
+                        JSONObject jsonObjectMovies = new JSONObject(contents);
+                        String title = jsonObjectMovies.getString ("title");
+                        String image = jsonObjectMovies.getString ("image");
+                        String category = jsonObjectMovies.getString ("category");
+                        JSONArray jsonArraySource = jsonObjectMovies.getJSONArray("source");
+                        if(categoryArray[j] .equals (jsonObjectMovies.getString ("category"))) {
+                            movieList.add(new Movie (title, image,category,jsonArraySource ));
+                        }
+
+                    }
+                    // matching the category and movie list
+                    verticalMovieList.add (new VerticalMovie (categoryArray[j]+" ("+movieList.size ()+")", movieList));
+
+                }
+                verticalMovieAdapter.notifyDataSetChanged ();
             }
-        }, new Response.ErrorListener () {
+        }, new ApiFetcher.OnErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                progressBar.setVisibility (View.INVISIBLE);
+            public void OnError(VolleyError error) {
+
             }
-        });
-        requestQueue.add (jsonArrayRequest);
+        }).fetch(url);
     }
 
     @Override
@@ -225,6 +204,11 @@ public class MainActivity extends AppCompatActivity {
         super.onPause ();
         Log.d("OnStop", "this is on stop");
         timer.cancel ();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     /// create new thread on ui for timer

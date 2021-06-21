@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SeriesDetailActivity"></activity>
+        <activity android:name=".activity.MoreMovieActivity"></activity>
+        <activity android:name=".activity.SeriesDetailActivity" />
         <activity
             android:name=".activity.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
